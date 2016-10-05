@@ -9,32 +9,32 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Compare Database
 
-'Abre um relatÛrio especificado por nome
+'Abre um relat√≥rio especificado por nome
 Public Function AbreRelatorio(Nome As String, Optional Argumentos As String = "")
     DoCmd.OpenReport Nome, acViewReport, , , , Argumentos
 End Function
 
-'Fecha um RelatÛrio especificado por nome
+'Fecha um Relat√≥rio especificado por nome
 Public Function FechaRelatorio(Nome As String)
     DoCmd.Close acReport, Nome, acSaveYes
 End Function
 
-'Abre um relatÛrio para ediÁ„o
+'Abre um relat√≥rio para edi√ß√£o
 Public Function EditaRelatorio(Nome As String)
     DoCmd.OpenReport Nome, acViewDesign
 End Function
 
-'Abre um formul·rio especificado por nome
+'Abre um formul√°rio especificado por nome
 Public Function AbreFormulario(Nome As String, Optional Argumentos As String = "")
     DoCmd.OpenForm Nome, acNormal, , , , , Argumentos
 End Function
 
-'Abre um formul·rio especificado por nome
+'Abre um formul√°rio especificado por nome
 Public Function AbreFormularioExclusivo(Nome As String, Optional Argumentos As String = "")
     DoCmd.OpenForm Nome, , , , , acDialog, Argumentos
 End Function
 
-'Fecha um formul·rio especificado por nome
+'Fecha um formul√°rio especificado por nome
 Public Function FechaFormulario(Nome As String)
     DoCmd.Close acForm, Nome, acSaveYes
 End Function
@@ -54,13 +54,13 @@ Public Function NomeCompleto(PrimeiroNome As String, Sobrenome As String)
     NomeCompleto = PrimeiroNome + " " + Sobrenome
 End Function
 
-'Executa uma consulta de selecao
+'Executa uma Query de busca definida por uma consulta gen√©rica e retorna o resultado da consulta
 Public Function ExecutaBusca(Consulta As String) As Recordset
     Debug.Print Consulta
     Set ExecutaBusca = CurrentDb.OpenRecordset(Consulta)
 End Function
 
-'Executa uma consulta de InserÁ„o, AtualizaÁ„o ou DeleÁ„o
+'Executa uma consulta de Inser√ß√£o, Atualiza√ß√£o ou Dele√ß√£o definida por uma consulta gen√©rica
 Public Function ExecutaAcao(Consulta As String)
     Debug.Print Consulta
     CurrentDb.Execute Consulta
@@ -91,7 +91,7 @@ Public Function NumeroNulo(Valor) As Double
     NumeroNulo = Valor
 End Function
 
-'Troca um valor 0 por 1 (Para evitar divisıes por zero
+'Troca um valor 0 por 1 (Para evitar divis√µes por zero
 Public Function SeZero(Valor)
     NumeroNulo Valor
     If Valor = 0 Then
@@ -106,7 +106,7 @@ Public Function CalculaIdade(dataAlvo As Date) As Double
     CalculaIdade = (Year(Date) - Year(dataAlvo)) + (Month(Date) - Month(dataAlvo)) / 12 + (Day(Date) - Day(dataAlvo)) / 365
 End Function
 
-'Converte formato de data para formato de String numÈrica
+'Converte formato de data para formato de String num√©rica
 Public Function ConvDataToStr(data) As String
     If IsDate(data) Then
         ConvDataToStr = Format(data, "yyyymmdd")
@@ -115,10 +115,10 @@ Public Function ConvDataToStr(data) As String
     End If
 End Function
 
-'Converte formato de formato numÈrico para data
+'Converte formato de formato num√©rico para data
 Public Function ConvDataFromStr(strData As String, Optional DataBrasileira As Boolean = False) As String
     On Error GoTo ERR1:
-    'Declara Vari·veis
+    'Declara Vari√°veis
     Dim final As String
     Dim ano As Integer, Mes As Integer, dia As Integer
 
@@ -126,7 +126,7 @@ Public Function ConvDataFromStr(strData As String, Optional DataBrasileira As Bo
     Mes = CInt((Mid(strData, 5, 2)))
     dia = CInt((Mid(strData, 7, 2)))
     
-    If Not DataBrasileira Then 'Formato de data conforme linguagem padr„o do computador
+    If Not DataBrasileira Then 'Formato de data conforme linguagem padr√£o do computador
         final = CStr(DateSerial(ano, Mes, dia))
     Else 'Formato de data brasileira
         final = dia & "/" & Mes & "/" & ano
@@ -135,20 +135,20 @@ Public Function ConvDataFromStr(strData As String, Optional DataBrasileira As Bo
     ConvDataFromStr = final
     Exit Function
     
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
     ConvDataFromStr = ""
     Exit Function
 End Function
 
-'Converte formato de data para formato numÈrico
+'Converte formato de data para formato num√©rico
 Public Function ConvHoraToStr(hora As Date) As String
     ConvHoraToStr = Format(hora, "hh:mm")
 End Function
 
-'Converte formato de formato numÈrico para data
+'Converte formato de formato num√©rico para data
 Public Function ConvHoraFromStr(strHora As String) As Date
-    'Declara Vari·veis
+    'Declara Vari√°veis
     Dim final As Date
     Dim hora As Integer, minuto As Integer
 
@@ -175,13 +175,13 @@ Public Function IsNulo(objeto) As Boolean
     IsNulo = False
     Exit Function
 
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
     IsNulo = True
     Exit Function
 End Function
 
-'MÈtodo de inserÁ„o de objetos
+'M√©todo de inser√ß√£o de objetos
 Public Function SQLInsere(TabelaDestino As String, Campos As String, Valores As String, IDAdicionada As Long) As Boolean
     'Define tratamento de erro
     On Error GoTo ERR1
@@ -195,13 +195,13 @@ Public Function SQLInsere(TabelaDestino As String, Campos As String, Valores As 
     SQLInsere = True
     Exit Function
     
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
     SQLInsere = False
     Exit Function
 End Function
 
-'MÈtodo de EdiÁ„o de objetos
+'M√©todo de Edi√ß√£o de objetos
 Public Function SQLAtualiza(TabelaDestino As String, CamposAlterados As String, Restricao As String) As Boolean
     'Define tratamento de erro
     On Error GoTo ERR1
@@ -213,13 +213,13 @@ Public Function SQLAtualiza(TabelaDestino As String, CamposAlterados As String, 
     SQLAtualiza = True
     Exit Function
     
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
     SQLAtualiza = False
     Exit Function
 End Function
 
-'MÈtodo de DeleÁ„o de objetos
+'M√©todo de Dele√ß√£o de objetos
 Public Function SQLDeleta(TabelaDestino As String, Optional Restricao As String = "Todos") As Boolean
     'Define tratamento de erro
     On Error GoTo ERR1
@@ -264,9 +264,9 @@ Public Function LimpaCombinacao(lista As ComboBox)
     Next auxiliarFor
 End Function
 
-'MÈtodo que realiza a convers„o de um n˙mero para seu extenso correspondente
+'M√©todo que realiza a convers√£o de um n√∫mero para seu extenso correspondente
 Public Function ConvNumeroToExtenso(Valor As Double)
-    'Declara Vari·veis
+    'Declara Vari√°veis
     Dim ParteInteira As Long
     Dim ValorStr As String
     Dim ValorInt As String
@@ -278,7 +278,7 @@ Public Function ConvNumeroToExtenso(Valor As Double)
         Exit Function
     End If
     
-    'Ajusta o valor de parte inteira para execuÁ„o do mÈtodo
+    'Ajusta o valor de parte inteira para execu√ß√£o do m√©todo
     ParteInteira = Len(CStr(Format(Valor, ".00"))) - 3
     If ((ParteInteira Mod 3) <> 0) Then
         ParteInteira = ParteInteira + 3 - (ParteInteira Mod 3)
@@ -288,31 +288,31 @@ Public Function ConvNumeroToExtenso(Valor As Double)
     Negativo = (Valor < 0)
     ValorStr = Format(Abs(Valor), String(ParteInteira, "0") + ".00")
     
-    'Prepara formataÁ„o de letras
+    'Prepara formata√ß√£o de letras
     unidade = Array("0", "Um", "Dois", "Tres", "Quatro", "Cinco", "Seis", "Sete", "Oito", "Nove", "Dez", "Onze", "Doze", "Treze", "Quatorze" _
     , "Quinze", "Dezesseis", "Dezessete", "Dezoito", "Dezenove")
     dezena = Array("0", "0", "Vinte", "Trinta", "Quarenta", "Cinqueta", "Sessenta", "Setenta", "Oitenta", "Noventa")
     centena = Array("0", "Cento", "Duzentos", "Trezentos", "Quatrocentos", "Quinhentos", "Seiscentos", "Setecentos", "Oitocentos", "Novecentos")
     milhar = "Mil"
     outros = Array("Mi", "Bi", "Tri", "Quadri", "Quinti")
-    diferenciacao = Array("0", "lh„o", "lhıes", "Cem", "Real", "Reais", "Centavo", "Centavos")
+    diferenciacao = Array("0", "lh√£o", "lh√µes", "Cem", "Real", "Reais", "Centavo", "Centavos")
     
     'Analiza parte inteira
     ValorInt = Left(ValorStr, ParteInteira)
     i = 1
     
-    'Executa a funÁ„o atravÈs de agrupamentos de trÍs algarismos para a parte inteira do n˙mero
+    'Executa a fun√ß√£o atrav√©s de agrupamentos de tr√™s algarismos para a parte inteira do n√∫mero
     While i <= (ParteInteira / 3)
-        'Se È o primeiro agrupamento, n„o coloca quantificador no valor extenso
+        'Se √© o primeiro agrupamento, n√£o coloca quantificador no valor extenso
         If (i = 1) Then
             pedaco = CInt(Mid(ValorInt, ParteInteira - (3 * i - 1), 3))
         Else: pedaco = CInt(Mid(ValorInt, ParteInteira - (3 * i - 1), 3))
         End If
-        'Se È o segundo agrupamento, adiciona quantificador de milhar no valor extenso
+        'Se √© o segundo agrupamento, adiciona quantificador de milhar no valor extenso
         If (i = 2) And (pedaco <> 0) Then
             extenso = " " + milhar + " e " + extenso
         End If
-        'Se È um agrupamento superior, coloca o quantificador correspondente no valor extenso
+        'Se √© um agrupamento superior, coloca o quantificador correspondente no valor extenso
         If (i >= 3) And (pedaco <> 0) Then
             If pedaco = 1 Then
                 extenso = outros(i - 3) + diferenciacao(1) + ", " + extenso
@@ -320,7 +320,7 @@ Public Function ConvNumeroToExtenso(Valor As Double)
             End If
             
         End If
-        'Atualiza o valor extenso com os n˙meros, em extenso, do agrupamento correspondente
+        'Atualiza o valor extenso com os n√∫meros, em extenso, do agrupamento correspondente
         extenso = ConvToExtensoAnalisaTres(Mid(ValorInt, ParteInteira - (3 * i - 1), 3), 3) + extenso
         
         i = i + 1
@@ -334,11 +334,11 @@ Public Function ConvNumeroToExtenso(Valor As Double)
         End If
     End If
     
-    'Pega os centavos do n˙mero
+    'Pega os centavos do n√∫mero
     cents = Right(ValorStr, 2)
-    'Se centavos for diferente de zero, analisa os centavos como um n˙mero independente
+    'Se centavos for diferente de zero, analisa os centavos como um n√∫mero independente
     If (CLng(cents) <> 0) Then
-        'Acrescenta um zero ‡ esquerda do n˙mero e cria seu extenso
+        'Acrescenta um zero √† esquerda do n√∫mero e cria seu extenso
         cents = Format(cents, "000")
         If (ParteInteira <> 0) Then
             extenso = extenso + " e " + ConvToExtensoAnalisaTres(cents, 3)
@@ -346,7 +346,7 @@ Public Function ConvNumeroToExtenso(Valor As Double)
             extenso = extenso + ConvToExtensoAnalisaTres(cents, 3)
         End If
         
-        'Define se ser· utilizado centavo ou centavos
+        'Define se ser√° utilizado centavo ou centavos
         If CLng(cents) = 1 Then
             extenso = extenso + " " + diferenciacao(6)
         Else: extenso = extenso + " " + diferenciacao(7)
@@ -357,36 +357,36 @@ Public Function ConvNumeroToExtenso(Valor As Double)
     Debug.Print extenso
 End Function
 
-'Pega tÍs algarismos e define seu extenso
+'Pega t√™s algarismos e define seu extenso
 Public Function ConvToExtensoAnalisaTres(ValorInt, tamanho) As String
-    'Prepara formataÁ„o de letras
+    'Prepara formata√ß√£o de letras
     unidade = Array("0", "Um", "Dois", "Tres", "Quatro", "Cinco", "Seis", "Sete", "Oito", "Nove", "Dez", "Onze", "Doze", "Treze", "Quatorze" _
     , "Quinze", "Dezesseis", "Dezessete", "Dezoito", "Dezenove")
     dezena = Array("0", "0", "Vinte", "Trinta", "Quarenta", "Cinqueta", "Sessenta", "Setenta", "Oitenta", "Noventa")
     centena = Array("0", "Cento", "Duzentos", "Trezentos", "Quatrocentos", "Quinhentos", "Seiscentos", "Setecentos", "Oitocentos", "Novecentos")
     milhar = "Mil"
     outros = Array("0", "Mi", "Bi", "Tri", "Quadri", "Quinti")
-    diferenciacao = Array("0", "lh„o", "lhıes", "Cem", "Real", "Reais", "Centavo", "Centavos")
+    diferenciacao = Array("0", "lh√£o", "lh√µes", "Cem", "Real", "Reais", "Centavo", "Centavos")
 
     i = 1
     
-    'Enquanto n„o analisou todos os tres algarismos:
+    'Enquanto n√£o analisou todos os tres algarismos:
     While i < 3
         
-        'Se È a primeira iteraÁ„o, pega os dois primeiros algarismos, sen„o pega o terceiro
+        'Se √© a primeira itera√ß√£o, pega os dois primeiros algarismos, sen√£o pega o terceiro
         If (i = 1) Then
             pedaco = CInt(Mid(ValorInt, tamanho - i, 2))
         Else: pedaco = CInt(Mid(ValorInt, tamanho - i, 1))
         End If
         
-        'Se È a terceira iteraÁ„o, adiciona o extenso correspondente
+        'Se √© a terceira itera√ß√£o, adiciona o extenso correspondente
         If (i = 2) And (pedaco <> 0) Then
             extenso = centena(pedaco) + " e " + extenso
         End If
         
-        'Se È a primeira iteraÁ„o, processa os dois primeiros algarismos
+        'Se √© a primeira itera√ß√£o, processa os dois primeiros algarismos
         If (i = 1) Then
-            'Se o n˙mero È diferente de 0, processa seu extenso
+            'Se o n√∫mero √© diferente de 0, processa seu extenso
             If (pedaco <> 0) Then
                 'Se estiver entre 1~19, adiciona o extenso correspondente
                 If (pedaco < 20) Then
@@ -394,13 +394,13 @@ Public Function ConvToExtensoAnalisaTres(ValorInt, tamanho) As String
                 Else
                     p1 = Int(pedaco / 10)
                     p2 = pedaco - p1 * 10
-                    'Se o primeiro algarismo for 0, adiciona somente o quantificador, sen„o, adiciona o extenso correspondente
+                    'Se o primeiro algarismo for 0, adiciona somente o quantificador, sen√£o, adiciona o extenso correspondente
                     If p2 = 0 Then
                         extenso = extenso + dezena(p1)
                     Else: extenso = extenso + dezena(p1) + " e " + unidade(p2)
                     End If
                 End If
-            Else 'Se o n˙mero = 0, analisa o terceiro algarismo
+            Else 'Se o n√∫mero = 0, analisa o terceiro algarismo
                 i = i + 1
                 pedaco = CInt(Mid(ValorInt, tamanho - i, 3))
                 'Diferencia cem de cento
@@ -420,7 +420,7 @@ Public Function ConvToExtensoAnalisaTres(ValorInt, tamanho) As String
     
 End Function
 
-'Retorna um valor abreviado para o mÍs em formato brasileiro
+'Retorna um valor abreviado para o m√™s em formato brasileiro
 Public Function MesAbreviado(Referencia As Integer) As String
     Select Case Referencia
         Case 1: MesAbreviado = "Jan"
@@ -439,12 +439,12 @@ Public Function MesAbreviado(Referencia As Integer) As String
     End Select
 End Function
 
-'Retorna o nome completo de um mes de referÍncia na lÌngua portuguesa
+'Retorna o nome completo de um mes de refer√™ncia na l√≠ngua portuguesa
 Public Function MesCompleto(Referencia As Integer) As String
     Select Case Referencia
         Case 1: MesCompleto = "Janeiro"
         Case 2: MesCompleto = "Fevereiro"
-        Case 3: MesCompleto = "MarÁo"
+        Case 3: MesCompleto = "Mar√ßo"
         Case 4: MesCompleto = "Abril"
         Case 5: MesCompleto = "Maio"
         Case 6: MesCompleto = "Junnho"
@@ -490,9 +490,9 @@ Public Function CriaPDF(NomeArquivo As String, Categoria, NomeObjeto As String) 
     Debug.Print CaminhoArquivo
     
     Exit Function
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
-    'MsgBox "Erro ao salvar PDF,caminho especificado n„o existe ou um arquivo de mesmo nome est· aberto. Arquivo n„o Criado", , "ERRO"
+    'MsgBox "Erro ao salvar PDF,caminho especificado n√£o existe ou um arquivo de mesmo nome est√° aberto. Arquivo n√£o Criado", , "ERRO"
     Exit Function
 End Function
 
@@ -506,13 +506,13 @@ Public Function AbrePDF(NomeArquivo As String, Categoria, NomeObjeto As String) 
     CaminhoArquivo = Caminho & "\" & NomeArquivo & ".pdf"
     Application.FollowHyperlink CaminhoArquivo
     Exit Function
-'CondiÁ„o de Erro
+'Condi√ß√£o de Erro
 ERR1:
-    MsgBox "Erro ao Abrir PDF,caminho especificado n„o existe", , "ERRO"
+    MsgBox "Erro ao Abrir PDF,caminho especificado n√£o existe", , "ERRO"
     Exit Function
 End Function
 
-'Salva uma p·gina especÌfica em PDF e abre
+'Salva uma p√°gina espec√≠fica em PDF e abre
 Public Function CriaAbrePDF(NomeArquivo As String, Categoria, NomeObjeto As String)
     If Not CriaPDF(NomeArquivo, Categoria, NomeObjeto) Then
         Exit Function
