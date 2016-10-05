@@ -2,12 +2,17 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cls_main"
+Attribute VB_Name = "cls_Utilities"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Compare Database
+
+'Atualizada em 05/10/2016
+'Desenvolvida por Gustavo Diniz da Corte
+'Para utilizar esse arquivo importe-o para uma Base de Dados do Microsoft Access e defina um objeto em algum módulo
+'In order to use this file import it to a Microsoft Access Database and create an object inside a module
 
 'Abre um relatório especificado por nome
 Public Function AbreRelatorio(Nome As String, Optional Argumentos As String = "")
