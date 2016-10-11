@@ -9,10 +9,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Compare Database
 
-'Atualizada em 05/10/2016
-'Desenvolvida por Gustavo Diniz da Corte
-'Para utilizar esse arquivo importe-o para uma Base de Dados do Microsoft Access e defina um objeto em algum módulo
-'In order to use this file import it to a Microsoft Access Database and create an object inside a module
+'Atualizada em 11/10/2016
+'Desenvolvida por Gustavo Diniz da Corte (+55 31 998503203)
+'gustavodacorte@gmail.com
 
 'Abre um relatório especificado por nome
 Public Function AbreRelatorio(Nome As String, Optional Argumentos As String = "")
@@ -59,13 +58,13 @@ Public Function NomeCompleto(PrimeiroNome As String, Sobrenome As String)
     NomeCompleto = PrimeiroNome + " " + Sobrenome
 End Function
 
-'Executa uma Query de busca definida por uma consulta genérica e retorna o resultado da consulta
+'Executa uma consulta de selecao
 Public Function ExecutaBusca(Consulta As String) As Recordset
     Debug.Print Consulta
     Set ExecutaBusca = CurrentDb.OpenRecordset(Consulta)
 End Function
 
-'Executa uma consulta de Inserção, Atualização ou Deleção definida por uma consulta genérica
+'Executa uma consulta de Inserção, Atualização ou Deleção
 Public Function ExecutaAcao(Consulta As String)
     Debug.Print Consulta
     CurrentDb.Execute Consulta
@@ -125,16 +124,16 @@ Public Function ConvDataFromStr(strData As String, Optional DataBrasileira As Bo
     On Error GoTo ERR1:
     'Declara Variáveis
     Dim final As String
-    Dim ano As Integer, Mes As Integer, dia As Integer
+    Dim ano As Integer, mes As Integer, dia As Integer
 
     ano = CInt((Mid(strData, 1, 4)))
-    Mes = CInt((Mid(strData, 5, 2)))
+    mes = CInt((Mid(strData, 5, 2)))
     dia = CInt((Mid(strData, 7, 2)))
     
     If Not DataBrasileira Then 'Formato de data conforme linguagem padrão do computador
-        final = CStr(DateSerial(ano, Mes, dia))
+        final = CStr(DateSerial(ano, mes, dia))
     Else 'Formato de data brasileira
-        final = dia & "/" & Mes & "/" & ano
+        final = dia & "/" & mes & "/" & ano
     End If
     
     ConvDataFromStr = final
@@ -465,15 +464,17 @@ End Function
 
 'Cria uma data no formato: '00' de XXXXXXXX de '0000'
 Public Function DataRelatorio(arg01 As Date)
+    Dim mes As Integer
+    
     dia = Format(arg01, "dd")
-    Mes = CInt(Format(arg01, "mm"))
+    mes = CInt(Format(arg01, "mm"))
     ano = Format(arg01, "yyyy")
     
     'Coloca o dia em numero de 2 digitos
     DataExtenso = dia + " de "
     
     'Coloca o mes em extenso
-    DataExtenso = DataExtenso + MesCompleto
+    DataExtenso = DataExtenso + MesCompleto(mes)
     
     'coloca o ano em numero de 4 digitos
     DataExtenso = DataExtenso + " de " + ano
@@ -526,4 +527,100 @@ Public Function CriaAbrePDF(NomeArquivo As String, Categoria, NomeObjeto As Stri
     If Not AbrePDF(NomeArquivo, Categoria, NomeObjeto) Then
         Exit Function
     End If
+End Function
+
+'Redimensiona uma janela horizontalmente para manter todos os controles centralizados
+Public Function RedimensionaHorizontal(LarguraOriginal As Double, NovaLargura As Double, NomeForm As String) As Double
+    On Error GoTo ERR1
+    'Declara Variáveis
+    Dim Delta As Double
+    Dim conta As Long
+    'Define componente de ajuste
+    Delta = (NovaLargura - LarguraOriginal) / 2
+    
+    'Define numero de componentes do formulário
+    conta = Forms(NomeForm).Count - 1
+    
+    'Ajusta os controles
+    For i = 0 To conta Step 1
+        Forms(NomeForm).Controls(i).Left = Forms(NomeForm).Controls(i).Left + Delta
+    Next i
+    
+    RedimensionaHorizontal = NovaLargura
+    Exit Function
+ERR1: 'Condição de erro
+    RedimensionaHorizontal = LarguraOriginal
+    MsgBox "Impossível ajustar a janela nos limites desejados", , "ERRO"
+    Exit Function
+End Function
+
+'Redimensiona uma janela Verticalmente para manter todos os controles centralizados
+Public Function RedimensionaVertical(AlturaOriginal As Double, AlturaAtual As Double, NovaAltura As Double, NomeForm As String) As Double
+    On Error GoTo ERR1
+    'Declara Variáveis
+    Dim Delta As Double
+    Dim conta As Long
+    
+    'Verifica se a nova altura é compatível sem comprometer a estrutura original do formulário
+    If (AlturaOriginal > NovaAltura) Then
+        RedimensionaVertical = AlturaOriginal
+        Exit Function
+    End If
+    
+    'Calcula variações e componentes a serem ajustados
+    Delta = Fix((NovaAltura - AlturaAtual) / 2)
+    contaDetalhe = NumeroControles(NomeForm, acDetail) - 1
+    contaCabecalho = NumeroControles(NomeForm, acHeader) - 1
+    
+    'Define se será ajustado o cabeçalho ou a seção de detalhes
+    If (SecaoExiste(NomeForm, acHeader) And (contaCabecalho > -1)) Then 'Se existir cabeçalho e existirem controles nele
+        'Define a ordenação dos ajustes
+        If Delta < 0 Then 'Se delta é negativo
+            For i = 0 To contaCabecalho Step 1
+                Forms(NomeForm).Controls(i).Top = Forms(NomeForm).Controls(i).Top + Delta
+            Next i
+            Forms(NomeForm).Section(acHeader).Height = Forms(NomeForm).Section(acHeader).Height + Delta
+        Else 'se delta é positivo
+            Forms(NomeForm).Section(acHeader).Height = Forms(NomeForm).Section(acHeader).Height + Delta
+            For i = 0 To contaCabecalho Step 1
+                Forms(NomeForm).Controls(i).Top = Forms(NomeForm).Controls(i).Top + Delta
+            Next i
+        End If
+    Else 'Se não existir cabeçalho ou se não houver controles nele
+        For i = 0 To contaDetalhe Step 1 'Ajusta os controles
+            Forms(NomeForm).Controls(i).Top = Forms(NomeForm).Controls(i).Top + Delta
+        Next i
+    End If
+    
+    RedimensionaVertical = NovaAltura
+    Exit Function
+ERR1: 'Caso exista erro
+    RedimensionaVertical = AlturaAtual
+    MsgBox "Impossível ajustar a janela nos limites desejados", , "ERRO"
+    Exit Function
+End Function
+
+'Verifica se a seção do formulário existe
+Public Function SecaoExiste(FormName As String, TipoSecao As Long) As Boolean
+    On Error GoTo ERR1
+    Dim Nome As String
+    
+    Nome = Forms(FormName).Section(TipoSecao).Name
+    SecaoExiste = True
+    Exit Function
+ERR1:
+    SecaoExiste = False
+    Exit Function
+End Function
+
+'Calcula numero de controles em determinada seção do formulário
+Public Function NumeroControles(FormName As String, TipoSecao As Long) As Long
+    On Error GoTo ERR1
+    Dim Nome As String
+    
+    NumeroControles = Forms(FormName).Section(TipoSecao).Controls.Count
+    Exit Function
+ERR1:
+    NumeroControles = 0
+    Exit Function
 End Function
