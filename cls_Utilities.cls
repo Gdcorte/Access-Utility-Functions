@@ -530,13 +530,18 @@ Public Function CriaAbrePDF(NomeArquivo As String, Categoria, NomeObjeto As Stri
 End Function
 
 'Redimensiona uma janela horizontalmente para manter todos os controles centralizados
-Public Function RedimensionaHorizontal(LarguraOriginal As Double, NovaLargura As Double, NomeForm As String) As Double
+Public Function RedimensionaHorizontal(LarguraOriginal As Double, LarguraAtual As Double, NovaLargura As Double, NomeForm As String) As Double
     On Error GoTo ERR1
     'Declara Variáveis
     Dim Delta As Double
     Dim conta As Long
+    
+    If NovaLargura < LarguraOriginal Then
+        NovaLargura = LarguraOriginal
+    End If
+    
     'Define componente de ajuste
-    Delta = (NovaLargura - LarguraOriginal) / 2
+    Delta = (NovaLargura - LarguraAtual) / 2
     
     'Define numero de componentes do formulário
     conta = Forms(NomeForm).Count - 1
@@ -549,11 +554,11 @@ Public Function RedimensionaHorizontal(LarguraOriginal As Double, NovaLargura As
     RedimensionaHorizontal = NovaLargura
     Exit Function
 ERR1: 'Condição de erro
-    RedimensionaHorizontal = LarguraOriginal
+    RedimensionaHorizontal = LarguraAtual
     MsgBox "Impossível ajustar a janela nos limites desejados", , "ERRO"
     Exit Function
 End Function
-
+                                        
 'Redimensiona uma janela Verticalmente para manter todos os controles centralizados
 Public Function RedimensionaVertical(AlturaOriginal As Double, AlturaAtual As Double, NovaAltura As Double, NomeForm As String) As Double
     On Error GoTo ERR1
