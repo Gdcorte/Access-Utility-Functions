@@ -15,7 +15,3 @@ Public Function Fecha(nome As String)
     Principal.FechaFormulario nome
 End Function
 
-Private Function Redimensiona(LarguraOriginal, AlturaOriginal, LarguraAtual, AlturaAtual, NovaLarguraNovaAltura, NomeForm)
-    LarguraAtual = Principal.RedimensionaHorizontal(LarguraOriginal, LarguraAtual, NovaLargura, NomeForm)
-    AlturaAtual = Principal.RedimensionaDetalheVertical(AlturaOriginal, AlturaAtual, NovaAltura, NomeForm)
-End Function
