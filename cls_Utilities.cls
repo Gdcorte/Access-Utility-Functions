@@ -604,7 +604,43 @@ ERR1: 'Caso exista erro
     MsgBox "Impossível ajustar a janela nos limites desejados", , "ERRO"
     Exit Function
 End Function
-
+                                          
+'Redimensiona uma janela Verticalmente para manter todos os controles centralizados
+Public Function RedimensionaDetalheVertical(AlturaOriginal As Double, AlturaAtual As Double, NovaAltura As Double, NomeForm As String) As Double
+    On Error GoTo ERR1
+    'Declara Variáveis
+    Dim Delta As Double
+    
+    'Verifica se a nova altura é compatível sem comprometer a estrutura original do formulário
+    If (AlturaOriginal > NovaAltura) Then
+        RedimensionaDetalheVertical = AlturaOriginal
+        Exit Function
+    End If
+    
+    'Calcula variações e componentes a serem ajustados
+    Delta = Fix((NovaAltura - AlturaAtual) / 2)
+    contaDetalhe = NumeroControles(NomeForm, acDetail) - 1
+    
+    If Delta < 0 Then 'Se delta é negativo
+        For i = 0 To contaDetalhe Step 1 'Ajusta os controles
+            Forms(NomeForm).Section(acDetail).Controls(i).Top = Forms(NomeForm).Section(acDetail).Controls(i).Top + Delta
+        Next i
+        Forms(NomeForm).Section(acDetail).Height = Forms(NomeForm).Section(acDetail).Height + Delta
+    Else 'Se delta é positivo
+        Forms(NomeForm).Section(acDetail).Height = Forms(NomeForm).Section(acDetail).Height + Delta
+        For i = 0 To contaDetalhe Step 1 'Ajusta os controles
+            Forms(NomeForm).Section(acDetail).Controls(i).Top = Forms(NomeForm).Section(acDetail).Controls(i).Top + Delta
+        Next i
+    End If
+    
+    RedimensionaDetalheVertical = NovaAltura
+    Exit Function
+ERR1: 'Caso exista erro
+    RedimensionaDetalheVertical = AlturaAtual
+    MsgBox "Impossível ajustar a janela nos limites desejados", , "ERRO"
+    Exit Function
+End Function
+                                            
 'Verifica se a seção do formulário existe
 Public Function SecaoExiste(FormName As String, TipoSecao As Long) As Boolean
     On Error GoTo ERR1
